@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build:
+  Clang13:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,3 +18,18 @@ jobs:
           docker build  $GITHUB_WORKSPACE/images/ci/clang-13 -t ubuntu_20_04:clang-13
           docker tag ubuntu_20_04:clang-13 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
           docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
+  Clang14:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Login 
+        run: docker login yukicpp.jfrog.io -u yuki-bot -p ${{ secrets.ARTIFACTORY_KEY }}
+      
+      - name: Build and push CI/clang-14
+        run: |
+          docker build  $GITHUB_WORKSPACE/images/ci/clang-14 -t ubuntu_20_04:clang-14
+          docker tag ubuntu_20_04:clang-14 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-14
+          docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-14
