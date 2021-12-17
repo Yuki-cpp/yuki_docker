@@ -10,27 +10,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Login 
-        run: docker login yukicpp.jfrog.io -u yuki-bot -p ${{ secrets.ARTIFACTORY_KEY }}
-      
-      - name: Build and push CI/clang-13
+      - name: Build image
         run: |
-          docker build  $GITHUB_WORKSPACE/images/ci/clang-13 -t ubuntu_20_04:clang-13
-          docker tag ubuntu_20_04:clang-13 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
-          docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
-          
-  Clang14:
-    runs-on: ubuntu-latest
+          IMAGE_NAME = ubuntu_20_04:clang-13
+          docker build $GITHUB_WORKSPACE/images/ci/clang-13 --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Login 
-        run: docker login yukicpp.jfrog.io -u yuki-bot -p ${{ secrets.ARTIFACTORY_KEY }}
-      
-      - name: Build and push CI/clang-14
+      - name: Push image
         run: |
-          docker build  $GITHUB_WORKSPACE/images/ci/clang-14 -t ubuntu_20_04:clang-14
-          docker tag ubuntu_20_04:clang-14 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-14
-          docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-14
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
