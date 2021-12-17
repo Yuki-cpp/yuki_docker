@@ -41,7 +41,3 @@ RUN update-alternatives --remove-all cc
 
 RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 10
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-13 10
-
-#Clean-up
-RUN apt-get autoremove
-RUN apt-get clean

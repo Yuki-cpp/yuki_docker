@@ -18,6 +18,7 @@ jobs:
           docker build  $GITHUB_WORKSPACE/images/ci/clang-13 -t ubuntu_20_04:clang-13
           docker tag ubuntu_20_04:clang-13 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
           docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
+          
   Clang14:
     runs-on: ubuntu-latest
 
