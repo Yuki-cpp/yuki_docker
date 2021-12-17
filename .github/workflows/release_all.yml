@@ -27,7 +27,8 @@ jobs:
 
       - name: Push image
         run: |
-          docker tag ubuntu_20_04:latest ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:latest
-          docker push ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:latest
+          IMAGE_ID=$(echo ${{ github.repository_owner }}/ubuntu_20_04:latest | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_20_04:latest $IMAGE_ID
+          docker push $IMAGE_ID
 
           
