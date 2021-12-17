@@ -13,7 +13,7 @@ jobs:
       - name: Build image
         run: |
           IMAGE_NAME=ubuntu_20_04:clang-13
-          docker build $GITHUB_WORKSPACE/images/ci/clang-13 --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+          docker build $GITHUB_WORKSPACE/images/ci/clang-13 --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
