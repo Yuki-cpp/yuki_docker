@@ -15,6 +15,6 @@ jobs:
       
       - name: Build and push CI/clang-13
         run: |
-          docker build  $GITHUB_WORKSPACElimages/ci/clang-13 -t ubuntu_20_04:clang-13
+          docker build  $GITHUB_WORKSPACE/images/ci/clang-13 -t ubuntu_20_04:clang-13
           docker tag ubuntu_20_04:clang-13 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
           docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
