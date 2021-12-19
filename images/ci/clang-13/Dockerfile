@@ -31,6 +31,9 @@ RUN apt-get -y install libunwind-13-dev
 RUN apt-get -y install cmake
 RUN apt-get -y install python3-pip
 
+#Install conan
+RUN pip install conan
+
 # Setup default compilers to clang-13 variations
 RUN update-alternatives --remove-all c++
 RUN update-alternatives --remove-all cc
