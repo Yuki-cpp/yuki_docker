@@ -22,7 +22,7 @@ jobs:
       - name: dfd
         run: |
           echo ${{ env['20.04_t'] }}
-          echo env['${{ github.event.inputs.distribution }}_t']
+          echo ${{ env[format("{0}_t", github.event.inputs.distribution)] }}
 #       - uses: actions/checkout@v2
 #       - name: Log in to registry
 #         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
