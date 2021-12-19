@@ -1,4 +1,6 @@
-FROM ubuntu:20.04
+ARG version
+
+FROM ubuntu:${version}
 
 #Install tooling
 RUN apt-get update
