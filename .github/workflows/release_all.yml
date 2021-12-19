@@ -42,11 +42,11 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build image
         run: |
-          IMAGE_NAME=ubuntu_20_04:g++-11
-          docker build $GITHUB_WORKSPACE/images/ci/clang-14 --tag ubuntu_20_04:g++-11 --label "runnumber=${GITHUB_RUN_ID}"
+          IMAGE_NAME=ubuntu_20_04:gcc-11
+          docker build $GITHUB_WORKSPACE/images/ci/gcc --tag ubuntu_20_04:gcc-11 --label "runnumber=${GITHUB_RUN_ID}"
       - name: Push image
         run: |
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:g++-11 | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_20_04:g++-11 $IMAGE_ID
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:gcc-11 | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_20_04:gcc-11 $IMAGE_ID
           docker push $IMAGE_ID
           
