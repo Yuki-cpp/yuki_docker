@@ -31,7 +31,7 @@ jobs:
           docker build $GITHUB_WORKSPACE/images/ci \
           --tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:default \
           --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ env[format('{0}_t', github.event.inputs.distribution)] }}
+          --build-arg version=${{ github.event.inputs.distribution }}
           --build-arg name=${{ env[format('{0}_n', github.event.inputs.distribution)] }}
       - name: Push image
         run: |
