@@ -1,36 +1,36 @@
-name: Release all images
+name: Release CI image
 on:
   workflow_dispatch:
 
 jobs:
   Clang13:
     runs-on: ubuntu-latest
-
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Login 
-        run: docker login yukicpp.jfrog.io -u yuki-bot -p ${{ secrets.ARTIFACTORY_KEY }}
-      
-      - name: Build and push CI/clang-13
+      - name: Build image
         run: |
-          docker build  $GITHUB_WORKSPACE/images/ci/clang-13 -t ubuntu_20_04:clang-13
-          docker tag ubuntu_20_04:clang-13 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
-          docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-13
-          
+          IMAGE_NAME=ubuntu_20_04:clang-13
+          docker build $GITHUB_WORKSPACE/images/ci/clang-13 --tag ubuntu_20_04:clang-13 --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Push image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:clang-13 | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_20_04:clang-13 $IMAGE_ID
+          docker push $IMAGE_ID
   Clang14:
     runs-on: ubuntu-latest
-
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Login 
-        run: docker login yukicpp.jfrog.io -u yuki-bot -p ${{ secrets.ARTIFACTORY_KEY }}
-      
-      - name: Build and push CI/clang-14
+      - name: Build image
         run: |
-          docker build  $GITHUB_WORKSPACE/images/ci/clang-14 -t ubuntu_20_04:clang-14
-          docker tag ubuntu_20_04:clang-14 yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-14
-          docker push yukicpp.jfrog.io/ci-images/ubuntu_20_04:clang-14
+          IMAGE_NAME=ubuntu_20_04:clang-14
+          docker build $GITHUB_WORKSPACE/images/ci/clang-14 --tag ubuntu_20_04:clang-14 --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Push image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:clang-14 | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_20_04:clang-14 $IMAGE_ID
+          docker push $IMAGE_ID
+          

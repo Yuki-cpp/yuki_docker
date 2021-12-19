@@ -31,9 +31,8 @@ RUN apt-get -y install libunwind-14-dev
 RUN apt-get -y install cmake
 RUN apt-get -y install python3-pip
 
-#Install conan and add remote for yukicpp
+#Install conan
 RUN pip install conan
-RUN conan remote add yukicpp https://yukicpp.jfrog.io/artifactory/api/conan/conan-yuki
 
 # Setup default compilers to clang-14 variations
 RUN update-alternatives --remove-all c++
