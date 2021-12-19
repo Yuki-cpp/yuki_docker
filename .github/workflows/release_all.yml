@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Clang13:
+  clang-13:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:clang-13 | tr '[A-Z]' '[a-z]')
           docker tag ubuntu_20_04:clang-13 $IMAGE_ID
           docker push $IMAGE_ID
-  Clang14:
+  clang-14:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,5 +32,21 @@ jobs:
         run: |
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:clang-14 | tr '[A-Z]' '[a-z]')
           docker tag ubuntu_20_04:clang-14 $IMAGE_ID
+          docker push $IMAGE_ID       
+  gcc-11:
+    runs-on: ubuntu-latest
+    needs: clang-14
+    steps:
+      - uses: actions/checkout@v2
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build image
+        run: |
+          IMAGE_NAME=ubuntu_20_04:g++-11
+          docker build $GITHUB_WORKSPACE/images/ci/clang-14 --tag ubuntu_20_04:g++-11 --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Push image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:g++-11 | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_20_04:g++-11 $IMAGE_ID
           docker push $IMAGE_ID
           
