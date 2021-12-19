@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: dfd
-        run: echo ${{env['${{ github.event.inputs.distribution }}_t']}}
+        run: echo '${{env[${{ github.event.inputs.distribution }}_t]}}'
 #       - uses: actions/checkout@v2
 #       - name: Log in to registry
 #         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
