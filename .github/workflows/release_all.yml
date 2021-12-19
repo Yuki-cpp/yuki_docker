@@ -1,18 +1,35 @@
-name: Release CI image
+name: Release 20.04 Images
 on:
   workflow_dispatch:
 
 jobs:
-  clang-13:
+  default:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build image
+        run: |
+          IMAGE_NAME=ubuntu_20_04:default
+          docker build $GITHUB_WORKSPACE/images/ci --tag ubuntu_20_04:default --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Push image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:default | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_20_04:default $IMAGE_ID
+          docker push $IMAGE_ID
+
+  clang-13:
+    runs-on: ubuntu-latest
+    needs: default
+    steps:
+      - uses: actions/checkout@v2
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build image
         run: |
           IMAGE_NAME=ubuntu_20_04:clang-13
           docker build $GITHUB_WORKSPACE/images/ci/clang-13 --tag ubuntu_20_04:clang-13 --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Push image
         run: |
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:clang-13 | tr '[A-Z]' '[a-z]')
@@ -20,14 +37,15 @@ jobs:
           docker push $IMAGE_ID
   clang-14:
     runs-on: ubuntu-latest
+    needs: default
     steps:
       - uses: actions/checkout@v2
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build image
         run: |
           IMAGE_NAME=ubuntu_20_04:clang-14
           docker build $GITHUB_WORKSPACE/images/ci/clang-14 --tag ubuntu_20_04:clang-14 --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Push image
         run: |
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_20_04:clang-14 | tr '[A-Z]' '[a-z]')
