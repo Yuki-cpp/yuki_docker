@@ -1,5 +1,4 @@
 ARG version
-ARG name
 
 FROM ubuntu:${version}
 
@@ -9,7 +8,7 @@ RUN apt-get -y install apt-transport-https ca-certificates gnupg software-proper
 
 # Get external repos
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -
-RUN apt-add-repository deb https://apt.kitware.com/ubuntu/ ${name} main
+RUN apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main"
 
 #Install all required packages
 RUN apt-get update
