@@ -17,4 +17,4 @@ RUN apt-get -y install cmake
 RUN apt-get -y install python3-pip
 
 #Install conan
-RUN pip install conan
+RUN pip3 install conan
