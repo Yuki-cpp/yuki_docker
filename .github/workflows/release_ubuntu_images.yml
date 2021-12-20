@@ -15,7 +15,7 @@ env:
 
 jobs:
   build_base_image:
-    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -28,7 +28,7 @@ jobs:
 
   build_clang_14_image:
     needs: build_base_image
-    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -41,7 +41,7 @@ jobs:
 
   build_clang_13_image:
     needs: build_base_image
-    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -54,7 +54,7 @@ jobs:
 
   build_gcc_11_image:
     needs: build_clang_14_image
-    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
