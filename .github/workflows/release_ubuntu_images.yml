@@ -3,12 +3,11 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:
 
 
 jobs:
   build_base_image:
-    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
       image_path: $GITHUB_WORKSPACE/images/ci
       image_tag: default
@@ -17,7 +16,7 @@ jobs:
 
   build_clang_14_image:
     needs: build_base_image
-    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
       image_path: $GITHUB_WORKSPACE/images/ci/clang-14
       image_tag: clang-14
@@ -26,7 +25,7 @@ jobs:
 
   build_clang_13_image:
     needs: build_base_image
-    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
       image_path: $GITHUB_WORKSPACE/images/ci/clang-13
       image_tag: clang-13
@@ -35,7 +34,7 @@ jobs:
 
   build_gcc_11_image:
     needs: build_clang_14_image
-    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
+    uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
       image_path: $GITHUB_WORKSPACE/images/ci/gcc-11
       image_tag: gcc-11
