@@ -1,8 +1,10 @@
 name: Release Ubuntu Images
 on:
-  pull_request:
+  push:
     branches:
       - master
+  workflow_dispatch:
+
 
 jobs:
   build_base_image:
