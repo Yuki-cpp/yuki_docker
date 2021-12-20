@@ -1,5 +1,7 @@
 ARG version
-FROM ghcr.io/yuki-cpp/ubuntu_${version}:clang-14
+ARG base_tag
+
+FROM ghcr.io/yuki-cpp/ubuntu_${base_tag}:clang-14
 
 RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
 RUN apt-get update

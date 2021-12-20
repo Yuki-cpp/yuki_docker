@@ -39,7 +39,8 @@ jobs:
           docker build ${{ inputs.image_path }} \
           --tag ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} \
           --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ matrix.distrib }}
+          --build-arg version=${{ matrix.distrib }} \
+          --build-arg base_tag=${{ env[format('{0}_t', matrix.distrib)] }}
 
       - name: Push image
         run: |

@@ -1,5 +1,7 @@
 ARG version
-FROM ghcr.io/yuki-cpp/ubuntu_${version}:default
+ARG base_tag
+
+FROM ghcr.io/yuki-cpp/ubuntu_${base_tag}:default
 
 RUN mkdir llvm_setup
 RUN cd llvm_setup
