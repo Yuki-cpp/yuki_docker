@@ -23,8 +23,6 @@ jobs:
       image_tag: default
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_clang_14_image:
     needs: build_base_image
@@ -36,8 +34,6 @@ jobs:
       image_tag: clang-14
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_clang_13_image:
     needs: build_base_image
@@ -49,8 +45,6 @@ jobs:
       image_tag: clang-13
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_gcc_11_image:
     needs: build_clang_14_image
@@ -62,5 +56,3 @@ jobs:
       image_tag: gcc-11
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
