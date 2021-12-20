@@ -2,12 +2,6 @@ name: Build Ubuntu Image (Impl)
 on:
   workflow_call:
     inputs:
-      distribution:
-        required: true
-        type: string
-      distribution_tag:
-        required: true
-        type: string
       image_path:
         required: true
         type: string
@@ -21,8 +15,16 @@ on:
         required: true
         type: string
 
+
+env:
+  18.04_t: '18_04'
+  20.04_t: '20_04'
+
 jobs:
   build_and_push:
+    strategy:
+      matrix:
+        distrib: ['18.04', '20.04']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,15 +34,15 @@ jobs:
 
       - name: Build image
         run: |
-          IMAGE_NAME=ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }}
+          IMAGE_NAME=ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }}
 
           docker build ${{ inputs.image_path }} \
-          --tag ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }} \
+          --tag ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} \
           --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ inputs.distribution }}
+          --build-arg version=${{ matrix.distrib }}
 
       - name: Push image
         run: |
-          IMAGE_ID=$(echo ghcr.io/${{ inputs.owner_name }}/ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }} | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }} $IMAGE_ID
+          IMAGE_ID=$(echo ghcr.io/${{ inputs.owner_name }}/ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} $IMAGE_ID
           docker push $IMAGE_ID

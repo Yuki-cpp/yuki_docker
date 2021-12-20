@@ -2,61 +2,37 @@ name: Release Ubuntu Images
 on:
   workflow_dispatch:
 
-env:
-  18.04_t: '18_04'
-  20.04_t: '20_04'
-
 jobs:
   build_base_image:
-    strategy:
-    matrix:
-      distrib: ['18.04', '20.04']
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
-      distribution: ${{ matrix.distrib }}
-      distribution_tag: ${{ env[format('{0}_t', matrix.distrib)] }}
       image_path: $GITHUB_WORKSPACE/images/ci
       image_tag: default
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
 
   build_clang_14_image:
-    strategy:
-    matrix:
-      distrib: ['18.04', '20.04']
     needs: build_base_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
-      distribution: ${{ matrix.distrib }}
-      distribution_tag: ${{ env[format('{0}_t', matrix.distrib)] }}
       image_path: $GITHUB_WORKSPACE/images/ci/clang-14
       image_tag: clang-14
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
 
   build_clang_13_image:
-    strategy:
-    matrix:
-      distrib: ['18.04', '20.04']
     needs: build_base_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
-      distribution: ${{ matrix.distrib }}
-      distribution_tag: ${{ env[format('{0}_t', matrix.distrib)] }}
       image_path: $GITHUB_WORKSPACE/images/ci/clang-13
       image_tag: clang-13
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
 
   build_gcc_11_image:
-    strategy:
-    matrix:
-      distrib: ['18.04', '20.04']
     needs: build_clang_14_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
-      distribution: ${{ matrix.distrib }}
-      distribution_tag: ${{ env[format('{0}_t', matrix.distrib)] }}
       image_path: $GITHUB_WORKSPACE/images/ci/gcc-11
       image_tag: gcc-11
       owner_name: ${{ github.repository_owner }}
