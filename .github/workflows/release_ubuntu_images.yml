@@ -14,12 +14,60 @@ env:
   20.04_t: '20_04'
 
 jobs:
+  build_base_image:
+    uses: ./.github/workflows/build_ubuntu_image.yml
+    with:
+      distribution: ${{ github.event.inputs.distribution }}
+      distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
+      image_path: $GITHUB_WORKSPACE/images/ci
+      image_tag: default
+      owner_name: ${{ github.repository_owner }}
+      username: ${{ github.actor }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_clang_14_image:
+    needs: build_base_image
+    uses: ./.github/workflows/build_ubuntu_image.yml
+    with:
+      distribution: ${{ github.event.inputs.distribution }}
+      distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
+      image_path: $GITHUB_WORKSPACE/images/ci/clang-14
+      image_tag: clang-14
+      owner_name: ${{ github.repository_owner }}
+      username: ${{ github.actor }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_clang_13_image:
+    needs: build_base_image
+    uses: ./.github/workflows/build_ubuntu_image.yml
+    with:
+      distribution: ${{ github.event.inputs.distribution }}
+      distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
+      image_path: $GITHUB_WORKSPACE/images/ci/clang-13
+      image_tag: clang-13
+      owner_name: ${{ github.repository_owner }}
+      username: ${{ github.actor }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_gcc_11_image:
+    needs: build_clang_14_image
+    uses: ./.github/workflows/build_ubuntu_image.yml
+    with:
+      distribution: ${{ github.event.inputs.distribution }}
+      distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
+      image_path: $GITHUB_WORKSPACE/images/ci/gcc-11
+      image_tag: gcc-11
+      owner_name: ${{ github.repository_owner }}
+      username: ${{ github.actor }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   default:
     runs-on: ubuntu-latest
     steps:
-      - name: dfd
-        run: |
-          echo ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
       - uses: actions/checkout@v2
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin

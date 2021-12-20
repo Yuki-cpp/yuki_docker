@@ -1,4 +1,5 @@
-FROM ghcr.io/yuki-cpp/ubuntu_20_04:default
+ARG version
+FROM ghcr.io/yuki-cpp/ubuntu_${version}:default
 
 RUN mkdir llvm_setup
 RUN cd llvm_setup

@@ -1,0 +1,50 @@
+on:
+  workflow_call:
+    inputs:
+      distribution:
+        required: true
+        type: string
+      distribution_tag:
+        required: true
+        type: string
+      image_path:
+        required: true
+        type: string
+      image_tag:
+        required: true
+        type: string
+      owner_name:
+        required: true
+        type: string
+      username:
+        required: true
+        type: string
+      
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ inputs.username }} --password-stdin
+
+      - name: Build image
+        run: |
+          IMAGE_NAME=ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }}
+
+          docker build ${{ inputs.image_path }} \
+          --tag ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }} \
+          --label "runnumber=${GITHUB_RUN_ID}" \
+          --build-arg version=${{ inputs.distribution }}
+
+      - name: Push image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ inputs.owner_name }}/ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }} | tr '[A-Z]' '[a-z]')
+          docker tag ubuntu_${{ inputs.distribution_tag }}:${{ inputs.image_tag }} $IMAGE_ID
+          docker push $IMAGE_ID
