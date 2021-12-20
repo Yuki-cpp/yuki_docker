@@ -1,4 +1,5 @@
-FROM ghcr.io/yuki-cpp/ubuntu_20_04:clang-14
+ARG version
+FROM ghcr.io/yuki-cpp/ubuntu_${version}:clang-14
 
 RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
 RUN apt-get update
