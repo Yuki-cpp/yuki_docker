@@ -7,10 +7,10 @@ env:
   20.04_t: '20_04'
 
 jobs:
-  strategy:
+  build_base_image:
+    strategy:
     matrix:
       distrib: ['18.04', '20.04']
-  build_base_image:
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ matrix.distrib }}
@@ -21,6 +21,9 @@ jobs:
       username: ${{ github.actor }}
 
   build_clang_14_image:
+    strategy:
+    matrix:
+      distrib: ['18.04', '20.04']
     needs: build_base_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
@@ -32,6 +35,9 @@ jobs:
       username: ${{ github.actor }}
 
   build_clang_13_image:
+    strategy:
+    matrix:
+      distrib: ['18.04', '20.04']
     needs: build_base_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
@@ -43,6 +49,9 @@ jobs:
       username: ${{ github.actor }}
 
   build_gcc_11_image:
+    strategy:
+    matrix:
+      distrib: ['18.04', '20.04']
     needs: build_clang_14_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
