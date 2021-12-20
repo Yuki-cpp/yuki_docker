@@ -15,7 +15,7 @@ env:
 
 jobs:
   build_base_image:
-    uses: ./.github/workflows/build_ubuntu_image.yml
+    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -28,7 +28,7 @@ jobs:
 
   build_clang_14_image:
     needs: build_base_image
-    uses: ./.github/workflows/build_ubuntu_image.yml
+    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -41,7 +41,7 @@ jobs:
 
   build_clang_13_image:
     needs: build_base_image
-    uses: ./.github/workflows/build_ubuntu_image.yml
+    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -54,7 +54,7 @@ jobs:
 
   build_gcc_11_image:
     needs: build_clang_14_image
-    uses: ./.github/workflows/build_ubuntu_image.yml
+    uses: ./.github/workflows/build_ubuntu_image.yml@generic_ubuntu_base_image
     with:
       distribution: ${{ github.event.inputs.distribution }}
       distribution_tag: ${{ env[format('{0}_t', github.event.inputs.distribution)] }}
@@ -64,77 +64,3 @@ jobs:
       username: ${{ github.actor }}
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  default:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Build image
-        run: |
-          IMAGE_NAME=ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:default
-          docker build $GITHUB_WORKSPACE/images/ci \
-          --tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:default \
-          --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ github.event.inputs.distribution }}
-      - name: Push image
-        run: |
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:default | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:default $IMAGE_ID
-          docker push $IMAGE_ID
-
-  clang-13:
-    runs-on: ubuntu-latest
-    needs: default
-    steps:
-      - uses: actions/checkout@v2
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Build image
-        run: |
-          IMAGE_NAME=ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-13
-          docker build $GITHUB_WORKSPACE/images/ci/clang-13 \
-          --tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-13 --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Push image
-        run: |
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-13 | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-13 $IMAGE_ID
-          docker push $IMAGE_ID
-  clang-14:
-    runs-on: ubuntu-latest
-    needs: default
-    steps:
-      - uses: actions/checkout@v2
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Build image
-        run: |
-          IMAGE_NAME=ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-14
-          docker build $GITHUB_WORKSPACE/images/ci/clang-14 \
-          --tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-14 --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Push image
-        run: |
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-14 | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:clang-14 $IMAGE_ID
-          docker push $IMAGE_ID       
-  gcc-11:
-    runs-on: ubuntu-latest
-    needs: clang-14
-    steps:
-      - uses: actions/checkout@v2
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      - name: Build image
-        run: |
-          IMAGE_NAME=ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:gcc-11
-          docker build $GITHUB_WORKSPACE/images/ci/gcc-11 \
-          --tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:gcc-11 \
-          --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ env[format('{0}_t', github.event.inputs.distribution)] }}
-      - name: Push image
-        run: |
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:gcc-11 | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_${{ env[format('{0}_t', github.event.inputs.distribution)] }}:gcc-11 $IMAGE_ID
-          docker push $IMAGE_ID
-          
