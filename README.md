@@ -9,8 +9,9 @@ Images for the following OS are currently provided:
 ## Images contents
 Each image comes pre-installed with the following software:
 - `git` (latest version available on the OS default package manager)
-- `python` (latest version available on the OS `pip3` package manager)
+- `conan` (latest version available on the OS `pip3` package manager)
 - `cmake` (latest version available on the OS Kitware package repository)
+- `sonar-scanner` and the sonar build wrapper (version `4.6.1.2450`. Both are added to the path and a `sonar-build-wrapper` alias exists for the wrapper.
 
 For each image, the following tags are available:
 - `default` : The default flavor of the OS, with no addition software (except the ones mentioned above) installed.
