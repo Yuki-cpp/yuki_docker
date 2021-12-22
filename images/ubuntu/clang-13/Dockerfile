@@ -14,7 +14,7 @@ RUN rm -rf llvm_setup
 
 #Install all required packages
 RUN apt-get update
-RUN apt-get -y install libllvm-13-ocaml-dev libllvm13 llvm-13 llvm-13-dev llvm-13-doc llvm-13-examples llvm-13-runtime
+RUN apt-get -y install libllvm-13-ocaml-dev libllvm13 llvm-13 llvm-13-dev llvm-13-doc llvm-13-runtime
 RUN apt-get -y install clang-13 clang-tools-13 clang-13-doc libclang-common-13-dev libclang-13-dev libclang1-13 clang-format-13 clangd-13
 RUN apt-get -y install libc++-13-dev libc++abi-13-dev
 RUN apt-get -y install lldb-13
