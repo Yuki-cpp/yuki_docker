@@ -9,7 +9,7 @@ jobs:
   build_base_image:
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
-      image_path: $GITHUB_WORKSPACE/images/ci
+      image_path: $GITHUB_WORKSPACE/images/ubuntu
       image_tag: default
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
@@ -18,7 +18,7 @@ jobs:
     needs: build_base_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
-      image_path: $GITHUB_WORKSPACE/images/ci/clang-12
+      image_path: $GITHUB_WORKSPACE/images/ubuntu/clang-12
       image_tag: clang-12
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
@@ -27,7 +27,7 @@ jobs:
     needs: build_base_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
-      image_path: $GITHUB_WORKSPACE/images/ci/clang-13
+      image_path: $GITHUB_WORKSPACE/images/ubuntu/clang-13
       image_tag: clang-13
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
@@ -36,7 +36,7 @@ jobs:
     needs: build_clang_13_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
-      image_path: $GITHUB_WORKSPACE/images/ci/gcc-10
+      image_path: $GITHUB_WORKSPACE/images/ubuntu/gcc-10
       image_tag: gcc-10
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
@@ -45,7 +45,7 @@ jobs:
     needs: build_clang_13_image
     uses: Yuki-cpp/yuki_docker/.github/workflows/build_ubuntu_image.yml@master
     with:
-      image_path: $GITHUB_WORKSPACE/images/ci/gcc-11
+      image_path: $GITHUB_WORKSPACE/images/ubuntu/gcc-11
       image_tag: gcc-11
       owner_name: ${{ github.repository_owner }}
       username: ${{ github.actor }}
