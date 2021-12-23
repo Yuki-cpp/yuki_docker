@@ -60,7 +60,7 @@ jobs:
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
 
           cd generated_tags2
-          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
+          wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker"
           git config --global user.name ${{ github.actor }}
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
           git add $IMAGE_NAME.svg
