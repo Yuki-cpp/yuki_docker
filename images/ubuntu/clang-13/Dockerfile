@@ -1,4 +1,3 @@
-ARG version
 ARG base_tag
 
 FROM ghcr.io/yuki-cpp/ubuntu_${base_tag}:default

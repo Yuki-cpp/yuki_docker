@@ -1,19 +1,9 @@
-name: Build Ubuntu Image (Impl)
+name: Release Ubuntu Images
 on:
-  workflow_call:
-    inputs:
-      image_path:
-        required: true
-        type: string
-      image_tag:
-        required: true
-        type: string
-      owner_name:
-        required: true
-        type: string
-      username:
-        required: true
-        type: string
+  push:
+    branches:
+      - master
+  workflow_dispatch:
 
 
 env:
@@ -21,29 +11,102 @@ env:
   20.04_t: '20_04'
 
 jobs:
-  build_and_push:
+  build_default_image:
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
       - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ inputs.username }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build image
+      - name: Setup variables
         run: |
-          IMAGE_NAME=ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }}
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
 
-          docker build ${{ inputs.image_path }} \
-          --tag ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} \
+      - name: Build default image
+        run: |
+          docker build $GITHUB_WORKSPACE/images/ubuntu \
+          --tag $IMAGE_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ matrix.distrib }} \
-          --build-arg base_tag=${{ env[format('{0}_t', matrix.distrib)] }}
+          --build-arg version=${{ matrix.distrib }}
 
-      - name: Push image
+      - name: Push default image
         run: |
-          IMAGE_ID=$(echo ghcr.io/${{ inputs.owner_name }}/ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} | tr '[A-Z]' '[a-z]')
-          docker tag ubuntu_${{ env[format('{0}_t', matrix.distrib)] }}:${{ inputs.image_tag }} $IMAGE_ID
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          docker tag $IMAGE_NAME $IMAGE_ID
+          docker push $IMAGE_ID
+
+
+
+  build_clang_images:
+    needs: build_default_image
+    strategy:
+      matrix:
+        distrib: ['18.04', '20.04']
+        compiler: ['clang-12', 'clang-13', 'clang-14']
+        exclude:
+          - distrib: '18.04'
+            compiler: 'clang-14'
+            
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Setup variables
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
+
+      - name: Build ${{ matrix.compiler }} image
+        run: |
+          docker build $GITHUB_WORKSPACE/images/ubuntu/${{ matrix.compiler }} \
+          --tag $IMAGE_NAME \
+          --label "runnumber=${GITHUB_RUN_ID}" \
+          --build-arg base_tag=$IMAGE_TAG
+
+      - name: Push default image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          docker tag $IMAGE_NAME $IMAGE_ID
+          docker push $IMAGE_ID
+
+  build_gcc_images:
+    needs: build_clang_images
+    strategy:
+      matrix:
+        distrib: ['18.04', '20.04']
+        compiler: ['gcc-10', 'gcc-11']
+            
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Setup variables
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
+
+      - name: Build ${{ matrix.compiler }} image
+        run: |
+          docker build $GITHUB_WORKSPACE/images/ubuntu/${{ matrix.compiler }} \
+          --tag $IMAGE_NAME \
+          --label "runnumber=${GITHUB_RUN_ID}" \
+          --build-arg base_tag=$IMAGE_TAG
+          --build-arg base_compiler=clang-13
+
+      - name: Push default image
+        run: |
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
