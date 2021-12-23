@@ -1,5 +1,4 @@
 ARG version
-ARG base_tag
 
 FROM ubuntu:${version}
 
