@@ -59,8 +59,8 @@ jobs:
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
 
-          git clone -b tags git@github.com:Yuki-cpp/yuki_docker.git generated_tags
           wget -O generated_tags/$IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
+          cd generated_tags
           git commit -am "Update badges"
           git push
 
