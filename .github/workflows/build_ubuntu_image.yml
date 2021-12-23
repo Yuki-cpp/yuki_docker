@@ -105,6 +105,7 @@ jobs:
           IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
           git config --global user.name '${{ github.actor }}'
           git config --global user.email 'Yuki-cpp@users.noreply.github.com'
+          git fetch
           git checkout tags
           wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
           git commit -am "Update badges"
