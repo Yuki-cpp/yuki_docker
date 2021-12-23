@@ -63,7 +63,7 @@ jobs:
           wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
           git config --global user.name ${{ github.actor }}
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          git add ./*
+          git add *
           git commit -m "Update badges"
           git push --force
 
