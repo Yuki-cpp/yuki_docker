@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: 'tags'
-          path: 'generated_tags'
+          path: 'generated_tags2'
 
       - name: Generate badge
         env:
@@ -59,6 +59,7 @@ jobs:
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
 
+          cd generated_tags2
           wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
           git config --global user.name ${{ github.actor }}
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
@@ -102,23 +103,6 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
-      - name: Generate badge
-        env:
-          TAG_COLOR: brightgreen
-          MSG: passing
-        if: always()
-        run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
-
-          git clone -b tags git@github.com:Yuki-cpp/yuki_docker.git generated_tags
-          cd generated_tags
-          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
-          git config --global user.name ${{ github.actor }}
-          git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          git add ./*
-          git commit -m "Update badges"
-          git push --force
 
 
   gcc:
