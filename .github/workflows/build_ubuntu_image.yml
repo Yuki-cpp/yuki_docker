@@ -79,7 +79,7 @@ jobs:
           docker push $IMAGE_ID
 
   build_gcc_images:
-    needs: build_default_image
+    needs: build_clang_images
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
