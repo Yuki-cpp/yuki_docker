@@ -42,21 +42,26 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
-      - name: Push badge
+      - name: Generate badge
         env:
           TAG_COLOR: brightgreen
           MSG: passing
         if: always()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
-          git config --global user.name '${{ github.actor }}'
-          git config --global user.email 'Yuki-cpp@users.noreply.github.com'
-          cd $GITHUB_WORKSPACE
-          git checkout tags
-          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+
+          git clone -b tags git@github.com:Yuki-cpp/yuki_docker.git generated_tags
+          wget -O generated_tags/$IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
           git commit -am "Update badges"
           git push
+      - name: Push badge
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: tags
+          FOLDER: generated_tags
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   clang:
