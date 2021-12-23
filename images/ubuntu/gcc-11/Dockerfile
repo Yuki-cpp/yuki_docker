@@ -1,7 +1,6 @@
-ARG base_compiler
 ARG base_tag
 
-FROM ghcr.io/yuki-cpp/ubuntu_${base_tag}:${base_compiler}
+FROM ghcr.io/yuki-cpp/ubuntu_${base_tag}:clang-13
 
 RUN add-apt-repository -y ppa:ubuntu-toolchain-r/test
 RUN apt-get update

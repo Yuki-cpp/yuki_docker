@@ -19,6 +19,8 @@ For each image, the following tags are available:
 In addition `clang-tidy-12` and `clang-format-12` are also provided.
 - `clang-13` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the clang-13 versions (`clang-13` and `clang++-13`). 
 In addition `clang-tidy-13` and `clang-format-13` are also provided.
+- `clang-14` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the clang-14 versions (`clang-14` and `clang++-14`). 
+In addition `clang-tidy-14` and `clang-format-14` are also provided. This compiler is only available with Ubuntu 20.04.
 - `gcc-10` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the gcc-10 versions (`gcc-10` and `g++-10`). 
 In addition `clang-tidy-13` and `clang-format-13` are also provided.
 - `gcc-11` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the gcc-11 versions (`gcc-11` and `g++-11`). 
@@ -31,25 +33,61 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
     <thead>
         <tr>
             <th>OS</th>
-            <th>Status</th>
+            <th>default</th>
+            <th>clang</th>
+            <th>gcc</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td rowspan=1>
-              <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_18_04">Ubuntu 18.04</a>
-            </td>
-            <td rowspan=2>
-              <a href="https://github.com/Yuki-cpp/yuki_docker/actions/workflows/release_ubuntu_images.yml">
-                <img src="https://github.com/Yuki-cpp/yuki_docker/actions/workflows/release_ubuntu_images.yml/badge.svg?branch=master" alt="Build passing">
-              </a>
-            </td>
-        </tr>
-        <tr>
-          <td rowspan=1>
-            <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_20_04">Ubuntu 20.04</a>
-          </td>
-        </tr>
+      <tr>
+        <td rowspan=2>
+          Ubuntu 18.04
+        </td>
+        <td rowspan=2>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/default%20(18.04)?icon=docker&label=ubuntu_18_04:default">
+        </td>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/clang%20(18.04,%20clang-12)?icon=docker&label=ubuntu_18_04:clang-12">
+        </td>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/gcc%20(18.04,%20gcc-10)?icon=docker&label=ubuntu_18_04:gcc-10">
+        </td>
+      </tr>
+      <tr>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/clang%20(18.04,%20clang-13)?icon=docker&label=ubuntu_18_04:clang-13">
+        </td>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/gcc%20(18.04,%20gcc-11)?icon=docker&label=ubuntu_18_04:gcc-11">
+        </td>
+      </tr>
+      <tr>
+        <td rowspan=3>
+          Ubuntu 20.04
+        </td>
+        <td rowspan=3>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/default%20(20.04)?icon=docker&label=ubuntu_20_04:default">
+        </td>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/clang%20(20.04,%20clang-12)?icon=docker&label=ubuntu_20_04:clang-12">
+        </td>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/gcc%20(20.04,%20gcc-10)?icon=docker&label=ubuntu_20_04:gcc-10">
+        </td>
+      </tr>
+      <tr>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/clang%20(20.04,%20clang-13)?icon=docker&label=ubuntu_20_04:clang-13">
+        </td>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/gcc%20(20.04,%20gcc-11)?icon=docker&label=ubuntu_20_04:gcc-11">
+        </td>
+      </tr>
+      <tr>
+        <td rowspan=1>
+          <img src="https://badgen.net/github/checks/Yuki-cpp/yuki_docker/master/clang%20(20.04,%20clang-14)?icon=docker&label=ubuntu_20_04:clang-14">
+        </td>
+      </tr>
     </tbody>
 </table>
 
