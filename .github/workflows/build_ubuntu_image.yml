@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}REKT" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build default image
         run: |
@@ -42,6 +42,20 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
+      - name: Push badge
+        env:
+          TAG_COLOR: brightgreen
+          MSG: passing
+        if: always()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
+          git config --global user.name '${{ github.actor }}'
+          git config --global user.email 'Yuki-cpp@users.noreply.github.com'
+          git checkout tags
+          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
+          git commit -am "Update badges"
+          git push
 
 
   clang:
@@ -59,7 +73,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}REKT" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build ${{ matrix.compiler }} image
         run: |
@@ -79,6 +93,21 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
+
+      - name: Push badge
+        env:
+          TAG_COLOR: brightgreen
+          MSG: passing
+        if: always()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
+          git config --global user.name '${{ github.actor }}'
+          git config --global user.email 'Yuki-cpp@users.noreply.github.com'
+          git checkout tags
+          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
+          git commit -am "Update badges"
+          git push
 
   gcc:
     needs: clang
