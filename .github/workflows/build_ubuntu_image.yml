@@ -11,7 +11,7 @@ env:
   20.04_t: '20_04'
 
 jobs:
-  build_default_image:
+  default:
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
@@ -44,8 +44,8 @@ jobs:
 
 
 
-  build_clang_images:
-    needs: build_default_image
+  clang:
+    needs: default
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
@@ -80,8 +80,8 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
-  build_gcc_images:
-    needs: build_clang_images
+  gcc:
+    needs: clang
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
