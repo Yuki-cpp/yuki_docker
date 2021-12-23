@@ -59,11 +59,10 @@ jobs:
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
 
-          wget -O generated_tags/$IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
-          cd generated_tags
+          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
           git config --global user.name ${{ github.actor }}
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          git add $IMAGE_NAME.svg
+          git add ./*
           git commit -m "Update badges"
           git push --force
 
@@ -113,11 +112,11 @@ jobs:
           IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
 
           git clone -b tags git@github.com:Yuki-cpp/yuki_docker.git generated_tags
-          wget -O generated_tags/$IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
           cd generated_tags
+          wget -O $IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker
           git config --global user.name ${{ github.actor }}
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          git add $IMAGE_NAME.svg
+          git add ./*
           git commit -m "Update badges"
           git push --force
 
