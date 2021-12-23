@@ -103,13 +103,12 @@ jobs:
           --tag $IMAGE_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
           --build-arg base_tag=$IMAGE_TAG
-          --build-arg base_compiler=clang-13
 
       - name: Push default image
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
-          
+
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
