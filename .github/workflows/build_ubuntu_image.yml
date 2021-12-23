@@ -94,7 +94,6 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
-
       - name: Generate badge
         env:
           TAG_COLOR: brightgreen
@@ -108,13 +107,13 @@ jobs:
           wget -O generated_tags/$IMAGE_NAME.svg https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR&style=plastic&logo=docker
           git commit -am "Update badges"
           git push
-        - name: Push badge
-          uses: s0/git-publish-subdir-action@develop
-          env:
-            REPO: self
-            BRANCH: tags
-            FOLDER: generated_tags
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push badge
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: tags
+          FOLDER: generated_tags
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   gcc:
     needs: clang
