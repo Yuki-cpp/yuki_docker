@@ -23,13 +23,11 @@ jobs:
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Setup variables
+      - name: Build default image
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
 
-      - name: Build default image
-        run: |
           docker build $GITHUB_WORKSPACE/images/ubuntu \
           --tag $IMAGE_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
@@ -37,6 +35,9 @@ jobs:
 
       - name: Push default image
         run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
+
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
@@ -60,13 +61,11 @@ jobs:
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Setup variables
-        run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
-
       - name: Build ${{ matrix.compiler }} image
         run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
+
           docker build $GITHUB_WORKSPACE/images/ubuntu/${{ matrix.compiler }} \
           --tag $IMAGE_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
@@ -74,7 +73,10 @@ jobs:
 
       - name: Push default image
         run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
+
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
@@ -92,13 +94,11 @@ jobs:
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Setup variables
+      - name: Build ${{ matrix.compiler }} image
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
 
-      - name: Build ${{ matrix.compiler }} image
-        run: |
           docker build $GITHUB_WORKSPACE/images/ubuntu/${{ matrix.compiler }} \
           --tag $IMAGE_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
@@ -107,6 +107,9 @@ jobs:
 
       - name: Push default image
         run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
