@@ -79,7 +79,7 @@ jobs:
         distrib: ['18.04', '20.04']
         compiler: ['clang-12', 'clang-13', 'clang-14']
         experimental: [false]
-        include:
+        exclude:
           - distrib: '18.04'
             compiler: 'clang-14'
             experimental: false
