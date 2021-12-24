@@ -201,8 +201,8 @@ jobs:
 
   clang_cancelled:
     runs-on: ubuntu-latest
-    needs: [clang]
-    if: always() && (needs.clang.result == 'cancelled')
+    needs: [default]
+    if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled')
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
@@ -229,8 +229,8 @@ jobs:
 
   gcc_cancelled:
     runs-on: ubuntu-latest
-    needs: [gcc]
-    if: always() && (needs.clang.result == 'cancelled')
+    needs: [default, clang]
+    if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled' || needs.clang.result == 'failure' || needs.clang.result == 'cancelled')
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
