@@ -162,6 +162,6 @@ jobs:
         env:
           REPO: self
           BRANCH: tags
-          FOLDER: $GITHUB_WORKSPACE
+          FOLDER: .
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SQUASH_HISTORY: true
