@@ -132,8 +132,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: "${{ env.OS_VERSION_ }}_${{ matrix.compiler }}"
-          path: ${{ env.OS_VERSION_ }}_${{ matrix.compiler }}.svg
+          name: "${{ env.OS_VERSION }}_${{ matrix.compiler }}"
+          path: ${{ env.OS_VERSION }}_${{ matrix.compiler }}.svg
           retention-days: 1
 
   gcc:
