@@ -14,28 +14,27 @@ jobs:
   default:
     strategy:
       matrix:
-        distrib: ['18.04', '20.04']
+        distrib: ['18', '20']
     runs-on: ubuntu-latest
     env:
       OS_VERSION: ${{ matrix.distrib }}.04
       OS_TAG: ${{ matrix.distrib }}_04
       IMAGE_TAG: default
-      IMAGE_NAME: ubuntu_${{env.OS_TAG}}
-      IMAGE_FULL_NAME: ${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
+      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:default
     steps:
       - uses: actions/checkout@v2
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build default image
+      - name: Build ${{env.IMAGE_TAG}} image
         run: |
           docker build $GITHUB_WORKSPACE/images/ubuntu \
           --tag $IMAGE_FULL_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg version=${{ matrix.distrib }}
+          --build-arg version=$OS_VERSION
 
-      - name: Push default image
+      - name: Push ${{env.IMAGE_TAG}} image
         run: |
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_FULL_NAME | tr '[A-Z]' '[a-z]')
           docker tag $IMAGE_FULL_NAME $IMAGE_ID
@@ -44,24 +43,24 @@ jobs:
       - name: Generate failure badge
         if: failure()
         run: |
-          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-failed-red?style=plastic&logo=docker"
+          wget -O  "$OS_VERSION_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
         if: success()
         run: |
-          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-passed-brightgreen?style=plastic&logo=docker"
+          wget -O  "$OS_VERSION_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-passed-brightgreen?style=plastic&logo=docker"
 
       - name: Generate cancelled badge
         if: cancelled()
         run: |
-          wget -O "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-cancelled-lightgray?style=plastic&logo=docker"
+          wget -O "$OS_VERSION_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: "${{ matrix.distrib }}_default"
-          path: ${{ matrix.distrib }}_default.svg
+          name: "${{ env.OS_VERSION }}_default"
+          path: ${{ env.OS_VERSION }}_default.svg
           retention-days: 1
 
 
