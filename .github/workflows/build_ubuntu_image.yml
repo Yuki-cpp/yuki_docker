@@ -15,15 +15,13 @@ jobs:
     strategy:
       matrix:
         distrib: ['18.04', '20.04']
-
+    runs-on: ubuntu-latest
     env:
       OS_VERSION: ${{ matrix.distrib }}.04
       OS_TAG: ${{ matrix.distrib }}_04
       IMAGE_TAG: default
       IMAGE_NAME: ubuntu_${{env.OS_TAG}}
       IMAGE_FULL_NAME: ${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
-
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
