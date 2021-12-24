@@ -74,6 +74,7 @@ jobs:
   clang:
     needs: default
     strategy:
+      fail-fast: false
       matrix:
         distrib: ['18.04', '20.04']
         compiler: ['clang-12', 'clang-13', 'clang-14']
