@@ -81,6 +81,10 @@ jobs:
         include:
           - distrib: '18.04'
             compiler: 'clang-14'
+            experimental: false
+        include:
+          - distrib: '18.04'
+            compiler: 'clang-14'
             experimental: true
             
     continue-on-error: ${{ matrix.experimental }}
