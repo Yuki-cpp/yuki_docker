@@ -16,6 +16,13 @@ jobs:
       matrix:
         distrib: ['18.04', '20.04']
 
+    env:
+      OS_VERSION: ${{ matrix.distrib }}.04
+      OS_TAG: ${{ matrix.distrib }}_04
+      IMAGE_TAG: default
+      IMAGE_NAME: ubuntu_${{env.OS_TAG}}
+      IMAGE_FULL_NAME: ${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,43 +32,31 @@ jobs:
 
       - name: Build default image
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
-
           docker build $GITHUB_WORKSPACE/images/ubuntu \
-          --tag $IMAGE_NAME \
+          --tag $IMAGE_FULL_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
           --build-arg version=${{ matrix.distrib }}
 
       - name: Push default image
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:default 
-
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
-          docker tag $IMAGE_NAME $IMAGE_ID
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_FULL_NAME | tr '[A-Z]' '[a-z]')
+          docker tag $IMAGE_FULL_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
       - name: Generate failure badge
         if: failure()
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
-          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
+          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
         if: success()
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
-          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
+          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-passed-brightgreen?style=plastic&logo=docker"
 
       - name: Generate cancelled badge
         if: cancelled()
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
-          wget -O "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+          wget -O "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_FULL_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
         if: always()
@@ -70,6 +65,42 @@ jobs:
           name: "${{ matrix.distrib }}_default"
           path: ${{ matrix.distrib }}_default.svg
           retention-days: 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   clang:
     needs: default
