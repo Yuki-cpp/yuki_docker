@@ -143,7 +143,7 @@ jobs:
 
 
   upload_badges:
-    needs : default, clang, gcc
+    needs : gcc
     if: always()
 
     runs-on: ubuntu-latest
