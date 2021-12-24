@@ -212,14 +212,12 @@ jobs:
             compiler: 'clang-14'
     steps:
       - name: Generate cancelled badge
-        if: cancelled()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
           wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
-        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
@@ -238,14 +236,12 @@ jobs:
 
     steps:
       - name: Generate cancelled badge
-        if: cancelled()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }}
           wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
-        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
