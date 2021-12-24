@@ -110,21 +110,21 @@ jobs:
         if: failure()
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
         if: success()
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
 
       - name: Generate cancelled badge
         if: cancelled()
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
@@ -172,21 +172,21 @@ jobs:
         if: failure()
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
         if: success()
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
 
       - name: Generate cancelled badge
         if: cancelled()
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
@@ -213,7 +213,7 @@ jobs:
       - name: Generate cancelled badge
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
@@ -237,7 +237,7 @@ jobs:
       - name: Generate cancelled badge
         run: |
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          DISPLAY_IMAGE_NAME="ubuntu_$OS_TAG:$COMPILER_TAG"
           wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
