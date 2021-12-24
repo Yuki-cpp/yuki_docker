@@ -77,9 +77,13 @@ jobs:
       matrix:
         distrib: ['18.04', '20.04']
         compiler: ['clang-12', 'clang-13', 'clang-14']
+        experimental: [false]
         exclude:
           - distrib: '18.04'
             compiler: 'clang-14'
+            experimental: true
+            
+    continue-on-error: ${{ matrix.experimental }}
             
     runs-on: ubuntu-latest
     steps:
