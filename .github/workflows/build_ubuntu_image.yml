@@ -50,7 +50,7 @@ jobs:
           wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
-        if: failed()
+        if: failure()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
