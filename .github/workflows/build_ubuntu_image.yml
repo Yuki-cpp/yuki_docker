@@ -47,14 +47,14 @@ jobs:
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
-          wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
+          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
         if: success()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
-          wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
+          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
 
       - name: Generate cancelled badge
         if: cancelled()
