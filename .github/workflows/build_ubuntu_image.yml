@@ -43,14 +43,14 @@ jobs:
           docker push $IMAGE_ID
 
       - name: Generate failure badge
-        if: failed()
+        if: failure()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
           wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
-        if: failure()
+        if: success()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
