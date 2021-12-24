@@ -42,31 +42,34 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
-
-      - name: Get tags
-        if: always()
-        uses: actions/checkout@v2
-        with:
-          ref: 'tags'
-          path: 'generated_tags2'
-
-      - name: Generate badge
-        env:
-          TAG_COLOR: brightgreen
-          MSG: passing
-        if: always()
+      - name: Generate failure badge
+        if: failed()
         run: |
           IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+          wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
-          cd generated_tags2
-          wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-$MSG-$TAG_COLOR?style=plastic&logo=docker"
-          git config --global user.name ${{ github.actor }}
-          git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          git add $IMAGE_NAME.svg
-          git commit -m "Update badges"
-          git push --force
+      - name: Generate success badge
+        if: failed()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+          wget -O "$IMAGE_NAME.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
 
+      - name: Generate cancelled badge
+        if: cancelled()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+          wget -O "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.distrib }}_default.svg"
+          path: ${{ matrix.distrib }}_default.svg
+          retention-days: 1
 
   clang:
     needs: default
