@@ -140,3 +140,26 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
+
+
+  upload_badges:
+    needs : default, clang, gcc
+    if: always()
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        ref: tags
+        
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+        path: $GITHUB_WORKSPACE/tags
+
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: tags
+          FOLDER: $GITHUB_WORKSPACE
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SQUASH_HISTORY: true
