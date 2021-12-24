@@ -52,15 +52,16 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
           </a>
         </td>
         <td>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/18.04_default/18.04_default.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_default/18.04_default.svg">
         </td>
         <td>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/18.04_clang-12/18.04_clang-12.svg"><br>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/18.04_clang-13/18.04_clang-13.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-12/18.04_clang-12.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-13/18.04_clang-13.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-14/18.04_clang-14.svg">
         </td>
         <td>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/18.04_gcc-10/18.04_gcc-10.svg"><br>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/18.04_gcc-11/18.04_gcc-11.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_gcc-10/18.04_gcc-10.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_gcc-11/18.04_gcc-11.svg">
         </td>
       </tr>
       <tr>
@@ -70,16 +71,16 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
           </a>
         </td>
         <td>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_default/20.04_default.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_default/20.04_default.svg">
         </td>
         <td>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_clang-12/20.04_clang-12.svg"><br>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_clang-13/20.04_clang-13.svg"><br>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_clang-14/20.04_clang-14.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-12/20.04_clang-12.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-13/20.04_clang-13.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-14/20.04_clang-14.svg">
         </td>
         <td>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_gcc-10/20.04_gcc-10.svg"><br>
-          <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_gcc-11/20.04_gcc-11.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_gcc-10/20.04_gcc-10.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_gcc-11/20.04_gcc-11.svg">
         </td>
       </tr>
     </tbody>
