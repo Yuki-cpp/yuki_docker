@@ -47,7 +47,9 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
     <tbody>
       <tr>
         <td>
-          Ubuntu 18.04
+          <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_18_04">
+              Ubuntu 18.04
+          </a>
         </td>
         <td>
           <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/18.04_default/18.04_default.svg">
@@ -63,7 +65,9 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
       </tr>
       <tr>
         <td>
-          Ubuntu 20.04
+          <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_20_04">
+              Ubuntu 20.04
+          </a>
         </td>
         <td>
           <img src="https://raw.githubusercontent.com/Yuki-cpp/yuki_docker/tags/tags/20.04_default/20.04_default.svg">
