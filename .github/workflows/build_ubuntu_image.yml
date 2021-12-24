@@ -63,7 +63,6 @@ jobs:
           path: ${{ env.OS_VERSION }}_default.svg
           retention-days: 1
 
-
   clang:
     needs: default
     strategy:
@@ -87,7 +86,7 @@ jobs:
       OS_VERSION: ${{ matrix.distrib }}.04
       OS_TAG: ${{ matrix.distrib }}_04
       IMAGE_TAG: ${{ matrix.compiler }}
-      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}    
+      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}
     steps:
       - uses: actions/checkout@v2
 
@@ -140,65 +139,62 @@ jobs:
     needs: clang
     strategy:
       matrix:
-        distrib: ['18.04', '20.04']
+        distrib: ['18', '20']
         compiler: ['gcc-10', 'gcc-11']
             
     runs-on: ubuntu-latest
+
+    env:
+      OS_VERSION: ${{ matrix.distrib }}.04
+      OS_TAG: ${{ matrix.distrib }}_04
+      IMAGE_TAG: ${{ matrix.compiler }}
+      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}
     steps:
       - uses: actions/checkout@v2
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build ${{ matrix.compiler }} image
+      - name: Build ${{ env.IMAGE_TAG }} image
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
-
           docker build $GITHUB_WORKSPACE/images/ubuntu/${{ matrix.compiler }} \
-          --tag $IMAGE_NAME \
+          --tag $IMAGE_FULL_NAME \
           --label "runnumber=${GITHUB_RUN_ID}" \
-          --build-arg base_tag=$IMAGE_TAG
+          --build-arg base_tag=$OS_TAG
 
-      - name: Push default image
+      - name: Push ${{ env.IMAGE_TAG }} image
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
-          IMAGE_NAME=ubuntu_$IMAGE_TAG:${{ matrix.compiler }} 
-          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME | tr '[A-Z]' '[a-z]')
-
-          docker tag $IMAGE_NAME $IMAGE_ID
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/$IMAGE_FULL_NAME | tr '[A-Z]' '[a-z]')
+          docker tag $IMAGE_FULL_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
       - name: Generate failure badge
         if: failure()
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
-          wget -O  "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
+          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$DISPLAY_IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
       - name: Generate success badge
         if: success()
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
-          wget -O  "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
+          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
 
       - name: Generate cancelled badge
         if: cancelled()
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
-          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
-          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          name: "${{ env.OS_VERSION }}_${{ matrix.compiler }}"
+          path: ${{ env.OS_VERSION }}_${{ matrix.compiler }}.svg
           retention-days: 1
 
 
@@ -216,16 +212,15 @@ jobs:
     steps:
       - name: Generate cancelled badge
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
-          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
         uses: actions/upload-artifact@v2
         with:
-          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
-          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          name: "${{ env.OS_VERSION }}_${{ matrix.compiler }}"
+          path: ${{ env.OS_VERSION }}_${{ matrix.compiler }}.svg
           retention-days: 1
 
 
@@ -241,16 +236,15 @@ jobs:
     steps:
       - name: Generate cancelled badge
         run: |
-          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
           COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
-          IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
-          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+          DISPLAY_IMAGE_NAME="ubuntu_$IMAGE_TAG:$COMPILER_TAG"
+          wget -O  "${OS_VERSION}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
 
       - name: Upload badge
         uses: actions/upload-artifact@v2
         with:
-          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
-          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          name: "${{ env.OS_VERSION }}_${{ matrix.compiler }}"
+          path: ${{ env.OS_VERSION }}_${{ matrix.compiler }}.svg
           retention-days: 1
 
 
