@@ -42,7 +42,34 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
+      - name: Generate failure badge
+        if: failure()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
 
+      - name: Generate success badge
+        if: success()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+          wget -O  "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
+
+      - name: Generate cancelled badge
+        if: cancelled()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          IMAGE_NAME=ubuntu_$IMAGE_TAG:default
+          wget -O "${{ matrix.distrib }}_default.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.distrib }}_default"
+          path: ${{ matrix.distrib }}_default.svg
+          retention-days: 1
 
   clang:
     needs: default
@@ -80,6 +107,38 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
 
+      - name: Generate failure badge
+        if: failure()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O  "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
+
+      - name: Generate success badge
+        if: success()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O  "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
+
+      - name: Generate cancelled badge
+        if: cancelled()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
+          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          retention-days: 1
+
   gcc:
     needs: clang
     strategy:
@@ -112,3 +171,112 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID
           docker push $IMAGE_ID
+
+      - name: Generate failure badge
+        if: failure()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O  "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-failed-red?style=plastic&logo=docker"
+
+      - name: Generate success badge
+        if: success()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O  "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-passed-brightgreen?style=plastic&logo=docker"
+
+      - name: Generate cancelled badge
+        if: cancelled()
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
+          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          retention-days: 1
+
+
+  clang_cancelled:
+    runs-on: ubuntu-latest
+    needs: [default]
+    if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled')
+    strategy:
+      matrix:
+        distrib: ['18.04', '20.04']
+        compiler: ['clang-12', 'clang-13', 'clang-14']
+        exclude:
+          - distrib: '18.04'
+            compiler: 'clang-14'
+    steps:
+      - name: Generate cancelled badge
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+
+      - name: Upload badge
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
+          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          retention-days: 1
+
+
+  gcc_cancelled:
+    runs-on: ubuntu-latest
+    needs: [default, clang]
+    if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled' || needs.clang.result == 'failure' || needs.clang.result == 'cancelled')
+    strategy:
+      matrix:
+        distrib: ['18.04', '20.04']
+        compiler: ['gcc-10', 'gcc-11']
+
+    steps:
+      - name: Generate cancelled badge
+        run: |
+          IMAGE_TAG=$(echo ${{ matrix.distrib }} | tr '.' '_')
+          COMPILER_TAG=$(echo ${{ matrix.compiler }} | tr '-' ' ')
+          IMAGE_NAME="ubuntu_$IMAGE_TAG $COMPILER_TAG "
+          wget -O "${{ matrix.distrib }}_${{ matrix.compiler }}.svg" "https://img.shields.io/badge/$IMAGE_NAME-cancelled-lightgray?style=plastic&logo=docker"
+
+      - name: Upload badge
+        uses: actions/upload-artifact@v2
+        with:
+          name: "${{ matrix.distrib }}_${{ matrix.compiler }}"
+          path: ${{ matrix.distrib }}_${{ matrix.compiler }}.svg
+          retention-days: 1
+
+
+  upload_badges:
+    needs : [default, clang, gcc, clang_cancelled, gcc_cancelled]
+    if: always()
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: tags
+        
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: tags
+
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: tags
+          FOLDER: .
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SQUASH_HISTORY: true
