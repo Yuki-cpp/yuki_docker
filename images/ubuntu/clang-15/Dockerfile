@@ -7,7 +7,7 @@ RUN cd llvm_setup
 RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 RUN wget https://apt.llvm.org/llvm.sh
 RUN chmod +x llvm.sh
-RUN ./llvm.sh
+RUN ./llvm.sh 15
 RUN cd ..
 RUN rm -rf llvm_setup
 

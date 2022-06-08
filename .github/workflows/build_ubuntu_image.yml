@@ -184,7 +184,7 @@ jobs:
     if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled')
     strategy:
       matrix:
-        compiler: ['clang-12', 'clang-13', 'clang-14']
+        compiler: ['clang-12', 'clang-13', 'clang-14'. 'clang-15']
     env:
       OS_VERSION: 20.04
       OS_TAG: 20_04
