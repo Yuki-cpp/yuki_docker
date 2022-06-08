@@ -3,7 +3,6 @@ This repository provides a number of Docker images with pre-installed software.
 
 ## Available images
 Images for the following OS are currently provided:
-- Ubuntu 18.04
 - Ubuntu 20.04
 
 ## Images contents
@@ -45,25 +44,6 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
         </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_18_04">
-              Ubuntu 18.04
-          </a>
-        </td>
-        <td>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_default/18.04_default.svg">
-        </td>
-        <td>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-12/18.04_clang-12.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-13/18.04_clang-13.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-14/18.04_clang-14.svg">
-        </td>
-        <td>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_gcc-10/18.04_gcc-10.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_gcc-11/18.04_gcc-11.svg">
-        </td>
-      </tr>
       <tr>
         <td>
           <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_20_04">
