@@ -7,15 +7,12 @@ on:
 
 jobs:
   default:
-    strategy:
-      matrix:
-        distrib: ['18', '20']
     runs-on: ubuntu-latest
     env:
-      OS_VERSION: ${{ matrix.distrib }}.04
-      OS_TAG: ${{ matrix.distrib }}_04
+      OS_VERSION: 20.04
+      OS_TAG: 20_04
       IMAGE_TAG: default
-      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:default
+      IMAGE_FULL_NAME: ubuntu_20_04:default
     steps:
       - uses: actions/checkout@v2
 
@@ -63,25 +60,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distrib: ['18', '20']
-        compiler: ['clang-12', 'clang-13', 'clang-14']
-        experimental: [false]
-        exclude:
-          - distrib: '18'
-            compiler: 'clang-14'
-            experimental: false
-        include:
-          - distrib: '18'
-            compiler: 'clang-14'
-            experimental: true            
-    continue-on-error: ${{ matrix.experimental }}
+        compiler: ['clang-12', 'clang-13', 'clang-14', 'clang-15']
             
     runs-on: ubuntu-latest
     env:
-      OS_VERSION: ${{ matrix.distrib }}.04
-      OS_TAG: ${{ matrix.distrib }}_04
+      OS_VERSION: 20.04
+      OS_TAG: 20_04
       IMAGE_TAG: ${{ matrix.compiler }}
-      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}
+      IMAGE_FULL_NAME: ubuntu_20_04:${{ matrix.compiler }}
     steps:
       - uses: actions/checkout@v2
 
@@ -134,16 +120,15 @@ jobs:
     needs: clang
     strategy:
       matrix:
-        distrib: ['18', '20']
         compiler: ['gcc-10', 'gcc-11']
             
     runs-on: ubuntu-latest
 
     env:
-      OS_VERSION: ${{ matrix.distrib }}.04
-      OS_TAG: ${{ matrix.distrib }}_04
+      OS_VERSION: 20.04
+      OS_TAG: 20_04
       IMAGE_TAG: ${{ matrix.compiler }}
-      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}
+      IMAGE_FULL_NAME: ubuntu_20_04:${{ matrix.compiler }}
     steps:
       - uses: actions/checkout@v2
 
@@ -199,13 +184,12 @@ jobs:
     if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled')
     strategy:
       matrix:
-        distrib: ['18', '20']
-        compiler: ['clang-12', 'clang-13', 'clang-14']
+        compiler: ['clang-12', 'clang-13', 'clang-14', 'clang-15']
     env:
-      OS_VERSION: ${{ matrix.distrib }}.04
-      OS_TAG: ${{ matrix.distrib }}_04
+      OS_VERSION: 20.04
+      OS_TAG: 20_04
       IMAGE_TAG: ${{ matrix.compiler }}
-      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}
+      IMAGE_FULL_NAME: ubuntu_20_04:${{ matrix.compiler }}
     steps:
       - name: Generate cancelled badge
         run: |
@@ -227,13 +211,12 @@ jobs:
     if: always() && (needs.default.result == 'failure' || needs.default.result == 'cancelled' || needs.clang.result == 'failure' || needs.clang.result == 'cancelled')
     strategy:
       matrix:
-        distrib: ['18', '20']
         compiler: ['gcc-10', 'gcc-11']
     env:
-      OS_VERSION: ${{ matrix.distrib }}.04
-      OS_TAG: ${{ matrix.distrib }}_04
+      OS_VERSION: 20.04
+      OS_TAG: 20_04
       IMAGE_TAG: ${{ matrix.compiler }}
-      IMAGE_FULL_NAME: ubuntu_${{ matrix.distrib }}_04:${{ matrix.compiler }}
+      IMAGE_FULL_NAME: ubuntu_20_04:${{ matrix.compiler }}
     steps:
       - name: Generate cancelled badge
         run: |

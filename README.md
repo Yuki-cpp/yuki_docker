@@ -3,7 +3,6 @@ This repository provides a number of Docker images with pre-installed software.
 
 ## Available images
 Images for the following OS are currently provided:
-- Ubuntu 18.04
 - Ubuntu 20.04
 
 ## Images contents
@@ -20,6 +19,7 @@ In addition `clang-tidy-12` and `clang-format-12` are also provided.
 - `clang-13` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the clang-13 versions (`clang-13` and `clang++-13`). 
 In addition `clang-tidy-13` and `clang-format-13` are also provided.
 - `clang-14` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the clang-14 versions (`clang-14` and `clang++-14`). 
+- `clang-15` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the clang-15 versions (`clang-15` and `clang++-15`). 
 In addition `clang-tidy-14` and `clang-format-14` are also provided. This compiler is only available with Ubuntu 20.04.
 - `gcc-10` : A version of the OS where the default C and C++ compilers (`cc` and `c++`) are set to use the gcc-10 versions (`gcc-10` and `g++-10`). 
 In addition `clang-tidy-13` and `clang-format-13` are also provided.
@@ -47,25 +47,6 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
     <tbody>
       <tr>
         <td>
-          <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_18_04">
-              Ubuntu 18.04
-          </a>
-        </td>
-        <td>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_default/18.04_default.svg">
-        </td>
-        <td>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-12/18.04_clang-12.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-13/18.04_clang-13.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_clang-14/18.04_clang-14.svg">
-        </td>
-        <td>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_gcc-10/18.04_gcc-10.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/18.04_gcc-11/18.04_gcc-11.svg">
-        </td>
-      </tr>
-      <tr>
-        <td>
           <a href="https://github.com/Yuki-cpp/yuki_docker/pkgs/container/ubuntu_20_04">
               Ubuntu 20.04
           </a>
@@ -76,7 +57,8 @@ In addition `clang-tidy-13` and `clang-format-13` are also provided.
         <td>
           <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-12/20.04_clang-12.svg"><br>
           <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-13/20.04_clang-13.svg"><br>
-          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-14/20.04_clang-14.svg">
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-14/20.04_clang-14.svg"><br>
+          <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_clang-15/20.04_clang-15.svg">
         </td>
         <td>
           <img src="https://github.com/Yuki-cpp/yuki_docker/blob/tags/tags/20.04_gcc-10/20.04_gcc-10.svg"><br>
