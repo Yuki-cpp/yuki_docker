@@ -4,7 +4,7 @@ FROM ubuntu:${version}
 
 #Install tooling
 RUN apt-get update
-RUN apt-get -y install apt-transport-https ca-certificates gnupg software-properties-common wget unzip apt-utils curl
+RUN apt-get -y install apt-transport-https ca-certificates gnupg software-properties-common wget unzip apt-utils curl zip unzip tar
 
 # Get external repos
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -
