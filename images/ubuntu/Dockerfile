@@ -4,7 +4,7 @@ FROM ubuntu:${version}
 
 #Install tooling
 RUN apt-get update
-RUN apt-get -y install apt-transport-https ca-certificates gnupg software-properties-common wget unzip apt-utils curl zip unzip tar
+RUN apt-get -y install apt-transport-https ca-certificates gnupg software-properties-common wget unzip apt-utils curl zip unzip tar pkg-config
 
 # Get external repos
 RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -
@@ -21,6 +21,7 @@ RUN pip3 install conan
 RUN mkdir /vcpkg
 RUN git clone https://github.com/Microsoft/vcpkg.git /vcpkg
 RUN /vcpkg/bootstrap-vcpkg.sh
+RUN /vcpkg/vcpkg integrate install
 ENV VCPKG_TOOLCHAIN "/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
 #Install sonar
