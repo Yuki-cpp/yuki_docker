@@ -17,6 +17,12 @@ RUN apt-get -y install git cmake python3-pip openjdk-11-jdk
 #Install conan
 RUN pip3 install conan
 
+#Install vcpkg
+RUN mkdir /vcpkg
+RUN git clone https://github.com/Microsoft/vcpkg.git /vcpkg
+RUN /vcpkg/bootstrap-vcpkg.sh
+ENV VCPKG_TOOLCHAIN "/vcpkg/scripts/buildsystems/vcpkg.cmake"
+
 #Install sonar
 RUN mkdir /sonar
 RUN wget -O /sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.1.2450-linux.zip
